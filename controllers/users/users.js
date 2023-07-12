@@ -33,7 +33,7 @@ const registerCtrl = async(req,resp,next)=>{
             password: passwordHashed,
         })
         console.log(user)
-        resp.redirect("/api/v1/users/profile-page")
+        resp.redirect("/api/v1/users/login")
         /*
         resp.json({
         status: 'success',
@@ -136,7 +136,7 @@ const profilePhotoCtrl = async(req,resp,next)=>{
         //2. Check if user is founf
         if(!userFound){
             //return next(appErr("User not found"),403)
-            resp.render('users/uploadProfilePhoto',{
+            return resp.render('users/uploadProfilePhoto',{
                 error: 'User not found'
             })
         }
@@ -157,7 +157,9 @@ const profilePhotoCtrl = async(req,resp,next)=>{
         user: "Profile photo uploaded successfully"
     })*/
     }catch(error){
-        return next(appErr(error.message))
+        return res.render("users/uploadProfilePhoto", {
+            error: error.message,
+          });
     }
 }
 
@@ -197,7 +199,9 @@ const coverPhotoCtrl = async(req,resp,next)=>{
         user: "Cover Image uploaded successfully"
     })*/
     }catch(error){
-        return next(appErr(error.message))
+        return resp.render("users/uploadCoverPhoto", {
+            error: error.message,
+          });
     }
 }
 const passwordCtrl = async(req,resp,next)=>{

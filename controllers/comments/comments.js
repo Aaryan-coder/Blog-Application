@@ -3,7 +3,7 @@ const Post = require("../../models/post/Post")
 const User = require("../../models/user/User")
 const appErr = require("../../utils/appErr")
 
-const createCommentCtrl = async(req,resp)=>{
+const createCommentCtrl = async(req,resp,next)=>{
     const {message} = req.body
     try{
         console.log(message)
@@ -35,7 +35,7 @@ const createCommentCtrl = async(req,resp)=>{
     })*/
     resp.redirect(`/api/v1/posts/${post._id}`)
     }catch(error){
-        resp.json(error)
+        next(appErr(error));
     }
 }
 
@@ -74,7 +74,7 @@ const updateCommentCtrl = async(req,resp,next)=>{
     console.log(req.query.postId)
     resp.redirect(`/api/v1/posts/${req.query.postId}`)
     }catch(error){
-        next(appErr(error.message))
+        next(appErr(error))
     }
 }
 
@@ -90,7 +90,7 @@ const deleteCommentCtrl = async(req,resp,next)=>{
        await Comment.findByIdAndDelete(req.params.id)
        resp.redirect(`/api/v1/posts/${req.query.postId}`)
     }catch(error){
-        next(appErr(error.message))
+        next(appErr(error))
     }
 }
 
